@@ -1,7 +1,6 @@
 #include <stdio.h>
 #define BOARD_SIZE 3
-
-
+int gover = 0;
 // System Variables
 char board[BOARD_SIZE][BOARD_SIZE] = {
     {'X', 'X', 'X'},
@@ -86,15 +85,71 @@ void print_board(int turn) {
     }
     printf("\n");
 }
-int is_valid_location(int row, int col,int peg) {
+int is_valid_location(int goverctr,int row, int col, int peg) {
     if (row < 0 || row >= BOARD_SIZE || col < 0 || col >= BOARD_SIZE) {
         return 0;
     }
     if (board[row][col] != 'X') {
         return 0;
     }
-    if(peg < 1 || peg > 9){
+    if (peg < 1 || peg > 9) {
         return 0;
     }
+    for (int i = 0; i < BOARD_SIZE; i++) {
+        for (int j = 0; j < BOARD_SIZE; j++) {
+            if (board[i][j] == (peg + '0')) {
+            	
+                return 0;
+            }
+        }
+    }
+    goverctr++;
     return 1;
+}
+void game_over() {
+    int sum, i, j;
+    for (i = 0; i < BOARD_SIZE; i++) {
+        sum = 0;
+        for (j = 0; j < BOARD_SIZE; j++) {
+            sum += (board[i][j] - '0');
+        }
+        if (sum == 15) {
+            if(board[i][0] != 'X'){
+                gover = 1;
+            }
+        }
+    }
+    for (i = 0; i < BOARD_SIZE; i++) {
+        sum = 0;
+        for (j = 0; j < BOARD_SIZE; j++) {
+            sum += (board[j][i] - '0');
+        }
+        if (sum == 15) {
+            if(board[0][i] != 'X'){
+                gover = 1;
+            }
+        }
+    }
+//    sum = 0;
+//    for (i = 0; i < BOARD_SIZE; i++) {
+//        sum += (board[i][i] - '0');
+//    }
+//    if (sum == 15) {
+//        // Check if the diagonal is not all X's
+//        if(board[0][0] != 'X'){
+//            gover = 1;
+//        }
+//    }
+//    // Check diagonal from top right to bottom left
+//    sum = 0;
+//    for (i = 0; i < BOARD_SIZE; i++) {
+//        sum += (board[i][BOARD_SIZE-1-i] - '0');
+//    }
+//    if (sum == 15) {
+//        // Check if the diagonal is not all X's
+//        if(board[0][BOARD_SIZE-1] != 'X'){
+//            gover = 1;
+//        }
+//    }
+    
 }
